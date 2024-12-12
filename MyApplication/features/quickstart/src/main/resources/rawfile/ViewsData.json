@@ -1,0 +1,30 @@
+[
+{
+"id": 1,
+"imageSrc": "app.media.View_pic1",
+"title": "沙面",
+"brief": "沙面，曾称拾翠洲，位于广州市荔湾区，是一座小岛， 国家AAAAA级景区， 面积0.3平方公里 。 沙面在宋、元、明、清时期为中国对外通商要津，明朝时，在此设立“华节亭”，管理外商货物进出，清朝中叶在此建西固炮台，拱卫广州城池 。",
+"webUrl": "https://baike.baidu.com/item/%E5%B9%BF%E5%B7%9E%E5%B8%82%E6%B2%99%E9%9D%A2%C2%B7%E8%A5%BF%E5%A0%A4%E6%97%85%E6%B8%B8%E5%8C%BA/65002088"
+},
+{
+"id": 2,
+"imageSrc": "app.media.View_pic2",
+"title": "故宫",
+"brief": "北京故宫位于中国北京市，是中国明清两代的皇家宫殿，旧称紫禁城，位于北京中轴线的中心。",
+"webUrl": "https://baike.baidu.com/item/%E5%8C%97%E4%BA%AC%E6%95%85%E5%AE%AB/345415"
+},
+{
+"id": 3,
+"imageSrc": "app.media.View_pic3",
+"title": "拙政园",
+"brief": "全园分东、中、西三部分，南有住宅一区，辟为苏州园林博物馆。布局主题以水为中心，池水面积约占总面积的五分之一，各种亭台轩榭多临水而筑。拙政园的建筑还有澄观楼、浮翠阁、玲珑馆和十八曼陀罗花馆等。",
+"webUrl": "https://baike.baidu.com/item/%E6%8B%99%E6%94%BF%E5%9B%AD/154079#6"
+},
+{
+"id": 4,
+"imageSrc": "app.media.View_pic4",
+"title": "五羊石像",
+"brief": "主羊头部高高昂起，口中衔穗，回眸微笑，其余四羊环绕于主羊周围，或戏耍，或吃草。五羊大小不一，姿态各异，造型优美，已经成为广州城市的标志。",
+"webUrl": "https://baike.baidu.com/item/%E4%BA%94%E7%BE%8A%E7%9F%B3%E5%83%8F/1403834"
+}
+]
