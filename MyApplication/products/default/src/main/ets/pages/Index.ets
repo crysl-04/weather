@@ -1,5 +1,8 @@
 import { QuickStartPage } from '@ohos/quickstart';
 import { Map } from '@ohos/map';
+import { My } from '@ohos/learning';
+
+// import { My } from '@ohos/my';
 
 @Entry
 @Component
@@ -48,10 +51,10 @@ struct Index {
       }
       .tabBar(this.tabBarBuilder('历史文化', 1, $r('app.media.ic_01_on'), $r('app.media.ic_01_off')))
 
-      // TabContent() {
-      //   My()
-      // }
-      // .tabBar(this.tabBarBuilder('我的', 2, $r('app.media.ic_01_on'), $r('app.media.ic_01_off')))
+      TabContent() {
+        My()
+      }
+      .tabBar(this.tabBarBuilder('我的', 2, $r('app.media.ic_01_on'), $r('app.media.ic_01_off')))
 
     }
     .scrollable(false)

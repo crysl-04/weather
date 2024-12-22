@@ -8,6 +8,10 @@ import { ArticleClass } from '../model/ArticleClass';
 import { BannerDetailPage } from './BannerDetailPage';
 import { BannerClass } from '../model/BannerClass';
 import getweatherUtil from '../util/getWeatherUtil'
+import getlocUtil from '../util/getLocUtil'
+import getrouteUtil from '../util/getRouteUtil'
+import { Location } from '../util/getRouteUtil';  // 导入 Location 接口
+
 import {WeatherModel} from '../viewmodel/WeatherModel'
 
 import WeatherData from '../viewmodel/WeatherData';
@@ -17,13 +21,14 @@ import CityTable from '../common/database/tables/CityTable'
 import { relationalStore, ValuesBucket } from '@kit.ArkData';
 import { bufferToString } from '../util/BufferUtil';
 import { CityCode } from '../model/CityCode';
-import CityData from '../viewmodel/CityData';
 
 interface NodeItem extends ValuesBucket{
   id: number | null
   city_name :string
   adcode:number
 }
+
+
 @Component
 export struct QuickStartPage {
   tableName: string = 'City'
@@ -35,7 +40,6 @@ export struct QuickStartPage {
       )`
   // 操作数据库的管理对象
   store: relationalStore.RdbStore | null = null
-
 
   async getStoreInstance() {
     // 如果已经存在，直接返回
@@ -63,6 +67,15 @@ export struct QuickStartPage {
   @State queryName : string =""
   @State cityAdcodeList: Array<CityCode>=[]
 
+  @State startName : string =	"北京市朝阳区建国门外大街21号88A"
+  @State endName : string ="北京市朝阳区建国门外大街59号"
+  @State startlong: number =116.434307
+  @State startlati: number =39.90909
+  @State endlong: number =116.434446
+  @State endlati: number =39.90816
+
+
+
 
   private weatherTable: WeatherTable = new WeatherTable();
 
@@ -75,12 +88,14 @@ export struct QuickStartPage {
   @State weatherMessage: string = '';
   @State cityMessage: string ='';
   @Builder
-  quickStartRouter(name: string, param?: ArticleClass | BannerClass) {
+  quickStartRouter(name: string, param?: ArticleClass ){
+    //| BannerClass) {
     if (name === 'articleDetail') {
       ArticleDetailPage()
-    }else if (name === 'bannerDetailPage') {
-      BannerDetailPage()
     }
+    // else if (name === 'bannerDetailPage') {
+    //   BannerDetailPage()
+    // }
   }
 
   @Builder tabBuild(index:number){
@@ -89,30 +104,13 @@ export struct QuickStartPage {
   }
 
   aboutToAppear(): void {
-    this.initDate()
+    // this.initDate()
     this.createDatabase()
     this.getCityCodeDataFromJSON()
-    this.insertCityCodeData()
+    // this.insertCityCodeData()
 
   }
-  // @State bannerList: BannerClass[] = [];
-  //
-  // getBannerDataFromJSON() {
-  //   getContext(this).resourceManager.getRawFileContent('BannerData.json').then(value => {
-  //
-  //     // 获取buffer内容
-  //
-  //     // 转换为字符串
-  //     let res: string =  bufferToString(value);
-  //
-  //     // 解析为数据结构
-  //     this.bannerList = JSON.parse(res) as BannerClass[];
-  //
-  //     console.info("bannerList:", JSON.stringify(this.bannerList, null, 2));
-  //
-  //
-  //   })
-  // }
+
 
   async insertCityCodeData() {
     try {
@@ -171,7 +169,7 @@ export struct QuickStartPage {
     // 执行创建表的语句 execute 执行
     store.executeSql(this.sqlCreate);
     // AlertDialog.show({ message: '创建成功' });
-}
+  }
 
   async initDate(){
     let result: Array<WeatherModel> = await getweatherUtil.getWeathers(this.cityCodeList);
@@ -185,6 +183,9 @@ export struct QuickStartPage {
     }
 
   }
+
+
+
 
   async queryAdcodeByCity(cityName: string):Promise<number|null>{
     const store = await this.getStoreInstance();
@@ -203,283 +204,251 @@ export struct QuickStartPage {
   build() {
     Navigation(this.articlePathStack) {
       Column() {
-        // Button('删除数据库文件')
-        //   // .enabled(false)
-        //   .onClick(async () => {
-        //     try {
-        //       await relationalStore.deleteRdbStore(getContext(), 'RdbTest.db')
-        //       AlertDialog.show({ message: '删除成功' })
-        //     } catch (error) {
-        //       AlertDialog.show({ message: JSON.stringify(error, null, 2) })
-        //     }
-        //
-        //  })
-        // Button('创建数据库文件')
-        //   .onClick(async () => {
-        //     // 获取操作数据库的管理对象(如果数据库文件不存在，会自动创建数据库文件)
-        //     const store = await relationalStore.getRdbStore(getContext(), {
-        //       name: 'RdbTest.db', // 数据库文件名
-        //       securityLevel: relationalStore.SecurityLevel.S1, // 数据库安全级别
-        //     })
-        //
-        //     // 执行创建表的语句 execute 执行
-        //     store.executeSql(this.sqlCreate)
-        //     AlertDialog.show({ message: '创建成功' })
-        //     const id = await store.insert(this.tableName, {
-        //       id: null, // 新增时设置 id 为空值 null，用于自增 id
-        //       city_name: '北京市',
-        //       adcode:110000
-        //     } as NodeItem)
-        //     AlertDialog.show({ message: '新增数组成功，数据的id为：' + id })
-        //   })
-        // Button('查询数据库表的字段')
-        //   .onClick(async () => {
-        //     // 获取操作数据库的对象
-        //     const store = await this.getStoreInstance()
-        //     // 谓词(条件)，谓词类需要 new 实例化，传入表名 privacy_note
-        //     const predicates = new relationalStore.RdbPredicates(this.tableName)
-        //     // query 查询，传入必传参数 谓词
-        //     const resultSet = await store.query(predicates)
-        //     AlertDialog.show({ message: '数据库的字段名：' + resultSet.columnNames })
-        //   })
-        // Button('新建一条数据')
-        //   .onClick(async () => {
-        //     // 获取操作数据库的对象
-        //     const store = await this.getStoreInstance()
-        //     // 添加一条数据
-        //     const id = await store.insert(this.tableName, {
-        //       id: null, // 新增时设置 id 为空值 null，用于自增 id
-        //       city_name: '北京市',
-        //       adcode:110000
-        //     } as NodeItem)
-        //     AlertDialog.show({ message: '新增数组成功，数据的id为：' + id })
-        //     // 批量添加，传入数组
-        //     // store.batchInsert(表名, 数组)
-        //
-        //   })
-
-        // Button('查询所有数据')
-        //   .onClick(async () => {
-        //     // 获取操作数据库的对象
-        //     const store = await this.getStoreInstance()
-        //     // 谓词（条件）
-        //     const predicates = new relationalStore.RdbPredicates(this.tableName)
-        //     predicates.orderByDesc('id') // 倒序(由大到小，常用于排序)
-        //
-        //     // resultSet 结果集
-        //     const resultSet = await store.query(predicates)
-        //     // 准备一个数组，用于存储数据库提取的数据
-        //     const list: NodeItem [] = []
-        //     // resultSet.goToNextRow()   指针移动到下一行
-        //     while (resultSet.goToNextRow()) {
-        //       // 移动指针的时候提取数据，按列下标提取数据
-        //       list.push({
-        //         id: resultSet.getLong(resultSet.getColumnIndex('id')),
-        //         city_name: resultSet.getString(resultSet.getColumnIndex('city_name')),
-        //         adcode: resultSet.getLong(resultSet.getColumnIndex('adcode')),
-        //         // resultSet.getColumnIndex()        根据列名称获取下标(索引)
-        //         // title: resultSet.getString(resultSet.getColumnIndex('title')),
-        //         // content: resultSet.getString(resultSet.getColumnIndex('content')),
-        //         // date_added: resultSet.getLong(resultSet.getColumnIndex('date_added')),
-        //       })
-        //     }
-        //     AlertDialog.show({ message: JSON.stringify(list, null, 2) })
-        //   })Button('查询所有数据')
-        //   .onClick(async () => {
-        //     // 获取操作数据库的对象
-        //     const store = await this.getStoreInstance()
-        //     // 谓词（条件）
-        //     const predicates = new relationalStore.RdbPredicates(this.tableName)
-        //     predicates.orderByDesc('id') // 倒序(由大到小，常用于排序)
-        //
-        //     // resultSet 结果集
-        //     const resultSet = await store.query(predicates)
-        //     // 准备一个数组，用于存储数据库提取的数据
-        //     const list: NodeItem [] = []
-        //     // resultSet.goToNextRow()   指针移动到下一行
-        //     while (resultSet.goToNextRow()) {
-        //       // 移动指针的时候提取数据，按列下标提取数据
-        //       list.push({
-        //         id: resultSet.getLong(resultSet.getColumnIndex('id')),
-        //         city_name: resultSet.getString(resultSet.getColumnIndex('city_name')),
-        //         adcode: resultSet.getLong(resultSet.getColumnIndex('adcode')),
-        //         // resultSet.getColumnIndex()        根据列名称获取下标(索引)
-        //         // title: resultSet.getString(resultSet.getColumnIndex('title')),
-        //         // content: resultSet.getString(resultSet.getColumnIndex('content')),
-        //         // date_added: resultSet.getLong(resultSet.getColumnIndex('date_added')),
-        //       })
-        //     }
-        //     AlertDialog.show({ message: JSON.stringify(list, null, 2) })
-        //   })
-        // Button('删除数据')
-        //   .onClick(async () => {
-        //     // 获取操作数据库对象
-        //     const store = await this.getStoreInstance()
-        //     const predicates = new relationalStore.RdbPredicates(this.tableName)
-        //     // 注意!!!：记得添加 predicates 限定条件，否者会删除所有数据
-        //     // predicates.equalTo('id', 2)        // equalTo 删除一条
-        //     predicates.in('id', [1, 2, 3, 4, 5,6,7,8,9]) //  in      批量删除
-        //     const affectedRows = await store.delete(predicates)
-        //     AlertDialog.show({ message: '受影响行数：' + affectedRows })
-        //   })
 
         Text(this.message)
-        .id('Hello')
-        .fontSize(24)
-        .fontWeight('700')
-        .width('100%')
-        .textAlign(TextAlign.Start)
-        .padding({ left: 16 })
-        .fontFamily('HarmonyHeiTi-Bold')
-        .lineHeight(33)
-      Scroll() {
-        Column() {
-          // 用户输入城市名称的 TextInput 组件
-          TextInput({placeholder:"城市名称"})
-            .type(InputType.Normal)
-            .onChange((value) => {
-              this.queryName = value;  // 将输入的城市名称保存到 this.cityName 中
-            });
-          // 查询按钮
-          Button("查询城市编码")
-            .borderRadius(8)
-            .backgroundColor(0x317aff)
-            .width(200)
-            .height(40)
-            .fontSize(20)
-            .onClick(async () => {
-              // 调用查询函数
-              const adcode = await this.queryAdcodeByCity(this.queryName);
-
-              if (adcode !== null) {11
-                // 显示查询结果
-                AlertDialog.show({ message: `城市 ${this.queryName} 对应的 adcode 是：${adcode}` });
-              }
-            });
-          TextInput({placeholder:"请输入城市编码"})
-            .type(InputType.Number)
-            .onChange((value) => {
-              this.cityCode = Number(value); // 将字符串转换为数字并更新城市编码
-            });
-          Button("获取天气")
-            .borderRadius(8)
-            .backgroundColor(0x317aff)
-            .width(130)
-            .height(40)
-            .fontSize(20)
-            .onClick(() => {
-            if (this.cityCode) { // 检查用户是否输入了编码
-              // 调用getWeather函数
-              getweatherUtil.getWeather(Number(this.cityCode)).then((weather) => {
-                // 处理成功获取天气信息后的逻辑
-                const liveData = weather.lives[0]; // 获取第一个天气信息
-                AlertDialog.show({ message:`城市: ${liveData.city}\n天气: ${liveData.weather}\n温度: ${liveData.temperature}°C\n风向: ${liveData.winddirection}\n风力: ${liveData.windpower}\n湿度: ${liveData.humidity}%\n更新时间: ${liveData.reporttime}` });
-
-                const weatherData = new WeatherData(
-                  liveData.city,
-                  liveData.weather,
-                  liveData.temperature,
-                  liveData.winddirection,
-                  liveData.windpower,
-                  liveData.humidity,
-                  liveData.reporttime
-                );
-                this.weatherTable.insertWeatherData(weatherData, (success:boolean) => {
-                  if (success) {
-                    console.log("天气数据已存储到数据库");
-                  } else {
-                    console.error("存储天气数据失败");
-                  }
-                });
-
-              }).catch((error:Error) => {
-                // 处理错误
-                console.error("获取天气失败:", error);
-                this.message = "获取天气失败，请稍后再试。";
+          .id('Hello')
+          .fontSize(24)
+          .fontWeight('700')
+          .width('100%')
+          .textAlign(TextAlign.Start)
+          .padding({ left: 16 })
+          .fontFamily('HarmonyHeiTi-Bold')
+          .lineHeight(33)
+        Scroll() {
+          Column() {
+            // 用户输入城市名称的 TextInput 组件
+            TextInput({placeholder:"请输入城市名称"})
+              .type(InputType.Normal)
+              .onChange((value) => {
+                this.queryName = value;  // 将输入的城市名称保存到 this.cityName 中
               });
-            } else {
-              this.message = "请输入有效的城市编码。"; // 提示用户输入编码
-            }
-          });
-          // TextInput()
-          //   .type(InputType.Normal)
-          //   .onChange((value) => {
-          //     this.cityName = value; // 将输入的城市名称保存到 this.cityName 中
-          //   });
-          // Button("查询天气")
-          //   .borderRadius(8)
-          //   .backgroundColor(0x317aff)
-          //   .width(130)
-          //   .height(40)
-          //   .fontSize(20)
-          //   .onClick(() => {
-          //     if (this.cityName) { // 检查用户是否输入了城市名称
-          //       // 调用 queryWeatherData 方法
-          //       this.weatherTable.queryWeatherData(this.cityName, (weatherData:WeatherData) => {
-          //         if (weatherData) {
-          //           // 如果找到天气数据，更新消息
-          //           this.message = `城市: ${weatherData.city}\n天气: ${weatherData.weather}\n温度: ${weatherData.temperature}°C\n风向: ${weatherData.winddirection}\n风力: ${weatherData.windpower}\n湿度: ${weatherData.humidity}%\n更新时间: ${weatherData.reporttime}`;
-          //         } else {
-          //           // 如果未找到数据，显示提示
-          //           this.message = "未找到该城市的天气数据。";
-          //         }
-          //       });
-          //     } else {
-          //       this.message = "请输入有效的城市名称。"; // 提示用户输入城市名称
-          //     }
-          //   });
-          Row(){
-            Button("查询历史记录")
+            // 查询按钮
+            Button("查询城市编码")
+              .borderRadius(8)
+              .backgroundColor(0x317aff)
+              .width(200)
+              .height(40)
+              .fontSize(20)
+              .onClick(async () => {
+                // 调用查询函数
+                const adcode = await this.queryAdcodeByCity(this.queryName);
 
-              .onClick(() => {
-                this.weatherTable.queryAllWeatherData((weatherDataList: WeatherData[]) => {
-                  if (weatherDataList.length > 0) {
-                    displayWeatherData(weatherDataList);
-                  } else {
-                    AlertDialog.show({ message: '没有历史天气记录!' });
-                  }
-                });
-              });
-            Button('删除查询记录').onClick(() => {
-              this.weatherTable.deleteAllWeatherData((result:boolean) => {
-                if (result) {
-                  AlertDialog.show({ message: '所有历史查询记录已成功删除！' });
-                } else {
-                  AlertDialog.show({ message: '删除历史查询记录失败！' });
+                if (adcode !== null) {11
+                  // 显示查询结果
+                  AlertDialog.show({ message: `城市 ${this.queryName} 对应的 adcode 是：${adcode}` });
                 }
               });
-            });
+            TextInput({placeholder:"请输入城市编码"})
+              .type(InputType.Number)
+              .onChange((value) => {
+                this.cityCode = Number(value); // 将字符串转换为数字并更新城市编码
+              });
+            Button("获取天气")
+              .borderRadius(8)
+              .backgroundColor(0x317aff)
+              .width(130)
+              .height(40)
+              .fontSize(20)
+              .onClick(() => {
+                if (this.cityCode) { // 检查用户是否输入了编码
+                  // 调用getWeather函数
+                  getweatherUtil.getWeather(Number(this.cityCode)).then((weather) => {
+                    // 处理成功获取天气信息后的逻辑
+                    const liveData = weather.lives[0]; // 获取第一个天气信息
+                    AlertDialog.show({ message:`城市: ${liveData.city}\n天气: ${liveData.weather}\n温度: ${liveData.temperature}°C\n风向: ${liveData.winddirection}\n风力: ${liveData.windpower}\n湿度: ${liveData.humidity}%\n更新时间: ${liveData.reporttime}` });
 
+                    const weatherData = new WeatherData(
+                      liveData.city,
+                      liveData.weather,
+                      liveData.temperature,
+                      liveData.winddirection,
+                      liveData.windpower,
+                      liveData.humidity,
+                      liveData.reporttime
+                    );
+                    this.weatherTable.insertWeatherData(weatherData, (success:boolean) => {
+                      if (success) {
+                        console.log("天气数据已存储到数据库");
+                      } else {
+                        console.error("存储天气数据失败");
+                      }
+                    });
+
+                  }).catch((error:Error) => {
+                    // 处理错误
+                    console.error("获取天气失败:", error);
+                    this.message = "获取天气失败，请稍后再试。";
+                  });
+                } else {
+                  this.message = "请输入有效的城市编码。"; // 提示用户输入编码
+                }
+              });
+
+            Row(){
+              Button("查询历史记录")
+
+                .onClick(() => {
+                  this.weatherTable.queryAllWeatherData((weatherDataList: WeatherData[]) => {
+                    if (weatherDataList.length > 0) {
+                      displayWeatherData(weatherDataList);
+                    } else {
+                      AlertDialog.show({ message: '没有历史天气记录!' });
+                    }
+                  });
+                });
+              Button('删除查询记录').onClick(() => {
+                this.weatherTable.deleteAllWeatherData((result:boolean) => {
+                  if (result) {
+                    AlertDialog.show({ message: '所有历史查询记录已成功删除！' });
+                  } else {
+                    AlertDialog.show({ message: '删除历史查询记录失败！' });
+                  }
+                });
+              });
+
+            }
+
+            // Banner()
+            // Views()
+            // FoodCultureView()
+
+            // 用户输入出发地点的 TextInput 组件
+            TextInput({placeholder:"请输入出发地"})
+              .type(InputType.Normal)
+              .onChange((value) => {
+                this.startName = value;  // 将输入的出发地保存到 this.startName 中
+
+              });
+            // 查询按钮
+            Button("查询经纬度坐标")
+              .borderRadius(8)
+              .backgroundColor(0x317aff)
+              .width(200)
+              .height(40)
+              .fontSize(20)
+              .onClick(async () => {
+                // 调用 getLoc 查询经纬度
+                try {
+                  const location = await getlocUtil.getLoc(this.startName); // 调用getLoc函数并传入地址
+                  if (location) {
+                    // 手动拆分 location 字符串
+                    // 直接访问对象属性而不使用解构
+                    const longitude = location.longitude;
+                    this.startlong = location.longitude;
+                    const latitude = location.latitude;
+                    this.startlati = location.latitude;
+
+                    // 显示查询结果
+                    AlertDialog.show({ message: `经纬度坐标：\n经度: ${longitude}\n纬度: ${latitude}` });
+                  } else {
+                    // 没有找到对应的经纬度
+                    AlertDialog.show({ message: "未找到该地址的经纬度信息。" });
+                  }
+                } catch (error) {
+                  // 错误处理
+                  AlertDialog.show({ message: `查询经纬度时出错: ${error.message}` });
+                }
+              });
+            // 用户输入出发地点的 TextInput 组件
+            TextInput({placeholder:"请输入目的地"})
+              .type(InputType.Normal)
+              .onChange((value) => {
+                this.endName = value;  // 将输入的出发地保存到 this.startName 中
+              });
+            // 查询按钮
+            Button("查询经纬度坐标")
+              .borderRadius(8)
+              .backgroundColor(0x317aff)
+              .width(200)
+              .height(40)
+              .fontSize(20)
+              .onClick(async () => {
+                // 调用 getLoc 查询经纬度
+                try {
+                  const location = await getlocUtil.getLoc(this.endName); // 调用getLoc函数并传入地址
+                  if (location) {
+                    // 手动拆分 location 字符串
+                    // 直接访问对象属性而不使用解构
+                    const longitude = location.longitude;
+                    this.endlong = location.longitude;
+                    const latitude = location.latitude;
+                    this.endlati = location.latitude;
+
+                    // 显示查询结果
+                    AlertDialog.show({ message: `经纬度坐标：\n经度: ${longitude}\n纬度: ${latitude}` });
+                  } else {
+                    // 没有找到对应的经纬度
+                    AlertDialog.show({ message: "未找到该地址的经纬度信息。" });
+                  }
+                } catch (error) {
+                  // 错误处理
+                  AlertDialog.show({ message: `查询经纬度时出错: ${error.message}` });
+                }
+              });
+
+            // 查询路径规划按钮
+            Button("查询步行路径规划")
+              .borderRadius(8)
+              .backgroundColor(0x317aff)
+              .width(200)
+              .height(40)
+              .fontSize(20)
+              .onClick(async () => {
+                try {
+                  // 查询起点的经纬度
+                  const startLocation = await getlocUtil.getLoc(this.startName);
+                  if (!startLocation) {
+                    AlertDialog.show({ message: `未找到地址 "${this.startName}" 的经纬度信息。` });
+                    return;
+                  }
+
+                  // 查询终点的经纬度
+                  const endLocation = await getlocUtil.getLoc(this.endName);
+                  if (!endLocation) {
+                    AlertDialog.show({ message: `未找到地址 "${this.endName}" 的经纬度信息。` });
+                    return;
+                  }
+
+                  // 保存起点和终点经纬度
+                  this.startlong = startLocation.longitude;
+                  this.startlati = startLocation.latitude;
+                  this.endlong = endLocation.longitude;
+                  this.endlati = endLocation.latitude;
+
+                  // 调用路径规划
+                  const routeResponse = await getrouteUtil.getWalkingRoute(
+                    { longitude: this.startlong, latitude: this.startlati },
+                    { longitude: this.endlong, latitude: this.endlati }
+                  );
+
+                  if (routeResponse && routeResponse.route) {
+                    // 显示路径规划结果
+                    let message = `从 ${this.startName} 到 ${this.endName} 的路径规划结果：\n`;
+
+                    routeResponse.route.paths.forEach((path, index) => {
+                      message += `路径 ${index + 1}:\n`;
+                      path.steps.forEach((step, stepIndex) => {
+                        message += `  第${stepIndex + 1}步: ${step.instruction} 距离: ${step.distance} 时间: ${step.duration}\n`;
+                      });
+                    });
+
+                    AlertDialog.show({ message: message });
+                  } else {
+                    AlertDialog.show({ message: "未找到有效的路径规划结果。" });
+                  }
+                } catch (error) {
+                  AlertDialog.show({ message: `查询路径规划时出错: ${error.message}` });
+                }
+              });
           }
-
-          // Button("查询城市编码")
-          //   .borderRadius(8)
-          //   .backgroundColor(0x317aff)
-          //   .width(130)
-          //   .height(40)
-          //   .fontSize(20)
-          //   .onClick(() => {
-          //     this.cityTable.queryAllCityData((cityDataList: CityData[]) => {
-          //       if (cityDataList.length > 0) {
-          //         displayCityData(cityDataList);
-          //       } else {
-          //         AlertDialog.show({ message: '没有信息!' });
-          //       }
-          //     });
-          //   });
-
-          Banner()
-          Views()
-          FoodCultureView()
         }
+        .layoutWeight(1)
+        .scrollBar(BarState.Off)
+        .align(Alignment.TopStart)
       }
-      .layoutWeight(1)
-      .scrollBar(BarState.Off)
-      .align(Alignment.TopStart)
-    }
-    .height('100%')
-    .width('100%')
-    .backgroundColor('#F1F3F5')
+      .height('100%')
+      .width('100%')
+      .backgroundColor('#F1F3F5')
     }
     .navDestination(this.quickStartRouter)
     .hideTitleBar(true)
@@ -497,13 +466,3 @@ function displayWeatherData(weatherDataList: WeatherData[]) {
   AlertDialog.show({ message: messages });
 }
 
-
-function displayCityData(cityDataList: CityData[]) {
-  // 构建要显示的消息字符串
-  const messages = cityDataList.map(cityData => {
-    return `城市: ${cityData.city_name}, 城市编码：${cityData.adcode}`;
-  }).join('\n'); // 使用换行符分隔每条记录
-
-  // 使用 AlertDialog 显示结果
-  AlertDialog.show({ message: messages });
-}
