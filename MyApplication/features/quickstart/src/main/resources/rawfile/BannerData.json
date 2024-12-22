@@ -1,0 +1,18 @@
+[
+  {
+    "id": 0,
+    "imageSrc": "app.media.banner_pic1",
+    "url": "https://baike.baidu.com/item/%E5%B9%BF%E5%B7%9E%E5%B8%82/21808"
+
+  },
+  {
+    "id": 1,
+    "imageSrc": "app.media.banner_pic2",
+    "url": "https://baike.baidu.com/item/%E8%8B%8F%E5%B7%9E%E5%B8%82/6743370"
+  },
+  {
+    "id": 2,
+    "imageSrc": "app.media.banner_pic3",
+    "url": "https://baike.baidu.com/item/%e5%8c%97%e4%ba%ac%e5%b8%82/126069"
+  }
+]
