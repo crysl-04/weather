@@ -1,1 +1,0 @@
-export { My } from './src/main/ets/pages/My';
