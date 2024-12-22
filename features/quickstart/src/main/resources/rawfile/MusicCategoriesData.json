@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "imageSrc": "app.media.MusicCa_pic1",
+    "title": "苏州弹词",
+    "brief": "苏州弹词盛行于江苏南部、上海和浙江部分地区，以小三弦、琵琶伴奏，自弹自唱，善用叙事与代言相结合的艺术手法，清代中叶技艺已趋成熟，涌现出众多名家，并以长篇如《珍珠塔》传世。",
+    "webUrl": "https://baike.baidu.com/item/%E8%8B%8F%E5%B7%9E%E5%BC%B9%E8%AF%8D/6045817"
+  },
+  {
+    "id": 2,
+    "imageSrc": "app.media.MusicCa_pic2",
+    "title": "广东音乐",
+    "brief": "广东音乐（粤乐）源于多元文化交融，主要流行于珠江三角洲等粤语区，以20世纪初的创新发展为代表，演奏形式丰富，融合粤胡等传统与西方乐器，自娱性强，并广泛应用于民间喜庆场合。",
+    "webUrl": "https://baike.baidu.com/item/%E5%B9%BF%E4%B8%9C%E9%9F%B3%E4%B9%90/366096"
+  }
+]
