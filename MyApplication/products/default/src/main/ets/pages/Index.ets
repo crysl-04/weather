@@ -136,6 +136,12 @@ struct Index {
   @State currentIndex: number = 0;
   private tabsController : TabsController = new TabsController();
 
+  //user
+  @State username: string = '用户名'
+  @State account: string = '12345678'
+  @State itemList: Array<string> = ['个人信息','账户设置', '相关推荐', '联系客服']
+  scroller: Scroller = new Scroller();
+
   @Builder
   tabBarBuilder(title: string, targetIndex: number, selectedIcon: Resource, unselectIcon: Resource) {
     Column() {
@@ -181,7 +187,81 @@ struct Index {
       .tabBar(this.tabBarBuilder('历史文化', 2, $r('app.media.ic_01_on'), $r('app.media.ic_01_off')))
 
       TabContent() {
-        My()
+        Scroll(this.scroller)
+        {
+          Column({ space: 40 }) {
+            //页头
+            Row({ space: 10 }) {
+              Image('https://kkimgs.yisou.com/ims?kt=url&at=ori&key=aHR0cHM6Ly93d3cuaHIubmV0LmNuL2RhdGEvdXBsb2FkL2NvbXBhbnkvMjAyMDAzMDQvMTU4NDA3NTgwMzguanBlZw==&sign=yx:kOTKzZQzp6DSWNSQd4Majx04zTA=&tv=0_0')
+                .layoutWeight(2)
+              Text('账号中心')
+                .fontSize(34)
+                .textAlign(TextAlign.Start)
+                .layoutWeight(10)
+              Image('https://kkimgs.yisou.com/ims?kt=url&at=ori&key=aHR0cDovL2h1YWNhaWl2eW91LnJvbmdzb2Z0LmNvbS91cGxvYWQvaW1nLzIwMjAwOS80Y2ZiOGM4NjliYTE0OWIwOTE0OWYzOWZiYTM3NGU0NS5qcGc=&sign=yx:_jy-IsZRvrU-d1HYXqTE3q8haMY=&tv=0_0')
+                .layoutWeight(2)
+            }
+            .height(45)
+            .width('95%')
+            .margin({ top: -5, left: 10 })
+
+            // 用户头像
+            Row({ space: 25 }) {
+              Image($r('app.media.startIcon'))
+                .width(60)
+                .borderRadius(30)
+              Column({ space: 6 }) {
+                Text(this.username)
+                  .fontWeight(FontWeight.Bold)
+                  .fontSize(22)
+                  .margin({ top: 0, left: -60 })
+                Text('账号: ' + this.account)
+                  .fontSize(18)
+                  .fontColor(Color.Grey)
+              }
+            }
+            .margin({ top: 0, left: -50, bottom: 50 })
+            .width('75%')
+
+            // 功能列表
+            List({ space: 10 }) {
+              ForEach(this.itemList, (item: string, index: number) => {
+                ListItem() {
+                  Row({}) {
+                    Text(item)
+                      .fontSize(22)
+                      .fontColor('#800080')
+                      .padding(6)
+                      .width('100%')
+                  }
+                  .width('100%')
+                  .justifyContent(FlexAlign.Center)
+                  .height(40)
+                  .backgroundColor(Color.White) //'#F5F5F5'
+                  .borderRadius(12)
+                }
+              })
+            }.width('95%').height(250)
+            .margin({ bottom: 30, right: -10 })
+
+            Button('切换账号')
+              .width(200)
+              .backgroundColor(Color.Red)
+              .margin({ bottom: -20 })
+              .clickEffect({ level: ClickEffectLevel.HEAVY })
+            Button('退出登录')
+              .width(200)
+              .backgroundColor(Color.Red)
+              .clickEffect({ level: ClickEffectLevel.HEAVY })
+
+          }
+        }
+        .scrollable(ScrollDirection.Vertical) // 滚动方向为垂直方向
+        .scrollBar(BarState.On) // 滚动条常驻显示
+        .scrollBarColor(Color.Gray) // 滚动条颜色
+        .scrollBarWidth(10) // 滚动条宽度
+        .edgeEffect(EdgeEffect.Spring) // 滚动到边沿后回弹
+
       }
       .tabBar(this.tabBarBuilder('我的', 3, $r('app.media.ic_01_on'), $r('app.media.ic_01_off')))
 
