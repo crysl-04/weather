@@ -137,7 +137,7 @@ struct Index {
   private tabsController : TabsController = new TabsController();
 
   //user
-  @State username: string = '用户名'
+  @State username: string = (router.getParams() as string)['username']
   @State account: string = '12345678'
   @State itemList: Array<string> = ['个人信息','账户设置', '相关推荐', '联系客服']
   scroller: Scroller = new Scroller();
@@ -207,7 +207,7 @@ struct Index {
 
             // 用户头像
             Row({ space: 25 }) {
-              Image($r('app.media.startIcon'))
+              Image($r('app.media.logo'))
                 .width(60)
                 .borderRadius(30)
               Column({ space: 6 }) {
