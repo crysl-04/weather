@@ -64,15 +64,15 @@ export struct QuickStartPage {
   @State cityIndex : number=0
   @State cityCode : number = 320500
   @State cityName : string = ""
-  @State queryName : string =""
+  @State queryName : string ="苏州市"
   @State cityAdcodeList: Array<CityCode>=[]
 
-  @State startName : string =	"北京市朝阳区建国门外大街21号88A"
-  @State endName : string ="北京市朝阳区建国门外大街59号"
-  @State startlong: number =116.434307
-  @State startlati: number =39.90909
-  @State endlong: number =116.434446
-  @State endlati: number =39.90816
+  @State startName : string =	"上海市黄浦区人民大道185号"
+  @State endName : string ="上海市黄浦区中山东一路"
+  @State startlong: number =121.474539
+  @State startlati: number =31.229381
+  @State endlong: number =121.489968
+  @State endlati: number =31.238949
 
 
 
@@ -214,18 +214,48 @@ export struct QuickStartPage {
           .padding({ left: 16 })
           .fontFamily('HarmonyHeiTi-Bold')
           .lineHeight(33)
+
         Scroll() {
           Column() {
+
+            Views()
+            FoodCultureView()
+
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
+
+            Row(){
+              Text('天气查询')
+                .fontColor('#182431')
+                .fontSize(16)
+                .fontWeight(500)
+                .fontFamily('HarmonyHeiTi-medium')
+                .textAlign(TextAlign.Start)
+                .padding({ left: 16 })
+                .margin({ bottom: 8.5 })
+              // 加载gif格式图片
+              Image($r('app.media.3'))
+                .width(50).height(50).margin(15)
+            }
+
+            Text('根据用户输入的 adcode，查询目标区域当前的天气情况')
+              .fontColor('#182431')
+              .fontSize(10)
+              .fontWeight(500)
+              .fontFamily('HarmonyHeiTi-medium')
+              .textAlign(TextAlign.Start)
+              .padding({ left: 16 })
+              .margin({ bottom: 8.5 })
             // 用户输入城市名称的 TextInput 组件
-            TextInput({placeholder:"请输入城市名称"})
+            TextInput({placeholder:"请输入城市名称：（苏州市）"})
               .type(InputType.Normal)
               .onChange((value) => {
                 this.queryName = value;  // 将输入的城市名称保存到 this.cityName 中
               });
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
             // 查询按钮
             Button("查询城市编码")
               .borderRadius(8)
-              .backgroundColor(0x317aff)
+              .backgroundColor(0xEFC3CA)
               .width(200)
               .height(40)
               .fontSize(20)
@@ -233,19 +263,23 @@ export struct QuickStartPage {
                 // 调用查询函数
                 const adcode = await this.queryAdcodeByCity(this.queryName);
 
-                if (adcode !== null) {11
+                if (adcode !== null) {
                   // 显示查询结果
                   AlertDialog.show({ message: `城市 ${this.queryName} 对应的 adcode 是：${adcode}` });
                 }
               });
-            TextInput({placeholder:"请输入城市编码"})
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
+
+            TextInput({placeholder:"请输入城市编码：（320500）"})
               .type(InputType.Number)
               .onChange((value) => {
                 this.cityCode = Number(value); // 将字符串转换为数字并更新城市编码
               });
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
+
             Button("获取天气")
               .borderRadius(8)
-              .backgroundColor(0x317aff)
+              .backgroundColor(0xEFC3CA)
               .width(130)
               .height(40)
               .fontSize(20)
@@ -284,9 +318,15 @@ export struct QuickStartPage {
                 }
               });
 
-            Row(){
-              Button("查询历史记录")
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
 
+            Row(){
+              Button({ type: ButtonType.Capsule, stateEffect: true }) {
+                Row() {
+                  LoadingProgress().width(20).height(20).margin({ left: 12 }).color(0xFFFFFF)
+                  Text('查询历史记录').fontSize(12).fontColor(0xffffff).margin({ left: 5, right: 12 })
+                }.alignItems(VerticalAlign.Center).width(120).height(40)
+              }.backgroundColor(0xEFC3CA)
                 .onClick(() => {
                   this.weatherTable.queryAllWeatherData((weatherDataList: WeatherData[]) => {
                     if (weatherDataList.length > 0) {
@@ -296,7 +336,14 @@ export struct QuickStartPage {
                     }
                   });
                 });
-              Button('删除查询记录').onClick(() => {
+              Blank('100')
+              Button({ type: ButtonType.Capsule, stateEffect: true }) {
+                Row() {
+                  LoadingProgress().width(20).height(20).margin({ left: 12 }).color(0xFFFFFF)
+                  Text('删除历史记录').fontSize(12).fontColor(0xffffff).margin({ left: 5, right: 12 })
+                }.alignItems(VerticalAlign.Center).width(120).height(40)
+              }.backgroundColor(0xEFC3CA)
+              .onClick(() => {
                 this.weatherTable.deleteAllWeatherData((result:boolean) => {
                   if (result) {
                     AlertDialog.show({ message: '所有历史查询记录已成功删除！' });
@@ -308,88 +355,111 @@ export struct QuickStartPage {
 
             }
 
-            // Banner()
-            // Views()
-            // FoodCultureView()
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
+
+            Row(){
+              Text('路径查询')
+                .fontColor('#182431')
+                .fontSize(16)
+                .fontWeight(500)
+                .fontFamily('HarmonyHeiTi-medium')
+                .textAlign(TextAlign.Start)
+                .padding({ left: 16 })
+                .margin({ bottom: 8.5 })
+              // 加载gif格式图片
+              Image($r('app.media.2'))
+                .width(50).height(50).margin(15)
+            }
+            Text('以下请输入结构化地址信息:省份＋城市＋区县＋城镇＋乡村＋街道＋门牌号码')
+              .fontColor('#182431')
+              .fontSize(10)
+              .fontWeight(500)
+              .fontFamily('HarmonyHeiTi-medium')
+              .textAlign(TextAlign.Start)
+              .padding({ left: 16 })
+              .margin({ bottom: 8.5 })
 
             // 用户输入出发地点的 TextInput 组件
-            TextInput({placeholder:"请输入出发地"})
+            TextInput({placeholder:"请输入出发地：（上海市黄浦区人民大道185号）"})
+
               .type(InputType.Normal)
               .onChange((value) => {
                 this.startName = value;  // 将输入的出发地保存到 this.startName 中
 
               });
-            // 查询按钮
-            Button("查询经纬度坐标")
-              .borderRadius(8)
-              .backgroundColor(0x317aff)
-              .width(200)
-              .height(40)
-              .fontSize(20)
-              .onClick(async () => {
-                // 调用 getLoc 查询经纬度
-                try {
-                  const location = await getlocUtil.getLoc(this.startName); // 调用getLoc函数并传入地址
-                  if (location) {
-                    // 手动拆分 location 字符串
-                    // 直接访问对象属性而不使用解构
-                    const longitude = location.longitude;
-                    this.startlong = location.longitude;
-                    const latitude = location.latitude;
-                    this.startlati = location.latitude;
+            // // 查询按钮 测试用
+            // Button("查询经纬度坐标")
+            //   .borderRadius(8)
+            //   .backgroundColor(0x317aff)
+            //   .width(200)
+            //   .height(40)
+            //   .fontSize(20)
+            //   .onClick(async () => {
+            //     // 调用 getLoc 查询经纬度
+            //     try {
+            //       const location = await getlocUtil.getLoc(this.startName); // 调用getLoc函数并传入地址
+            //       if (location) {
+            //         // 手动拆分 location 字符串
+            //         // 直接访问对象属性而不使用解构
+            //         const longitude = location.longitude;
+            //         this.startlong = location.longitude;
+            //         const latitude = location.latitude;
+            //         this.startlati = location.latitude;
+            //
+            //         // 显示查询结果
+            //         AlertDialog.show({ message: `经纬度坐标：\n经度: ${longitude}\n纬度: ${latitude}` });
+            //       } else {
+            //         // 没有找到对应的经纬度
+            //         AlertDialog.show({ message: "未找到该地址的经纬度信息。" });
+            //       }
+            //     } catch (error) {
+            //       // 错误处理
+            //       AlertDialog.show({ message: `查询经纬度时出错: ${error.message}` });
+            //     }
+            //   });
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
 
-                    // 显示查询结果
-                    AlertDialog.show({ message: `经纬度坐标：\n经度: ${longitude}\n纬度: ${latitude}` });
-                  } else {
-                    // 没有找到对应的经纬度
-                    AlertDialog.show({ message: "未找到该地址的经纬度信息。" });
-                  }
-                } catch (error) {
-                  // 错误处理
-                  AlertDialog.show({ message: `查询经纬度时出错: ${error.message}` });
-                }
-              });
             // 用户输入出发地点的 TextInput 组件
-            TextInput({placeholder:"请输入目的地"})
+            TextInput({placeholder:"请输入目的地：（上海市黄浦区中山东一路）"})
               .type(InputType.Normal)
               .onChange((value) => {
                 this.endName = value;  // 将输入的出发地保存到 this.startName 中
               });
-            // 查询按钮
-            Button("查询经纬度坐标")
-              .borderRadius(8)
-              .backgroundColor(0x317aff)
-              .width(200)
-              .height(40)
-              .fontSize(20)
-              .onClick(async () => {
-                // 调用 getLoc 查询经纬度
-                try {
-                  const location = await getlocUtil.getLoc(this.endName); // 调用getLoc函数并传入地址
-                  if (location) {
-                    // 手动拆分 location 字符串
-                    // 直接访问对象属性而不使用解构
-                    const longitude = location.longitude;
-                    this.endlong = location.longitude;
-                    const latitude = location.latitude;
-                    this.endlati = location.latitude;
-
-                    // 显示查询结果
-                    AlertDialog.show({ message: `经纬度坐标：\n经度: ${longitude}\n纬度: ${latitude}` });
-                  } else {
-                    // 没有找到对应的经纬度
-                    AlertDialog.show({ message: "未找到该地址的经纬度信息。" });
-                  }
-                } catch (error) {
-                  // 错误处理
-                  AlertDialog.show({ message: `查询经纬度时出错: ${error.message}` });
-                }
-              });
-
+            // 查询按钮  测试用
+            // Button("查询经纬度坐标")
+            //   .borderRadius(8)
+            //   .backgroundColor(0x317aff)
+            //   .width(200)
+            //   .height(40)
+            //   .fontSize(20)
+            //   .onClick(async () => {
+            //     // 调用 getLoc 查询经纬度
+            //     try {
+            //       const location = await getlocUtil.getLoc(this.endName); // 调用getLoc函数并传入地址
+            //       if (location) {
+            //         // 手动拆分 location 字符串
+            //         // 直接访问对象属性而不使用解构
+            //         const longitude = location.longitude;
+            //         this.endlong = location.longitude;
+            //         const latitude = location.latitude;
+            //         this.endlati = location.latitude;
+            //
+            //         // 显示查询结果
+            //         AlertDialog.show({ message: `经纬度坐标：\n经度: ${longitude}\n纬度: ${latitude}` });
+            //       } else {
+            //         // 没有找到对应的经纬度
+            //         AlertDialog.show({ message: "未找到该地址的经纬度信息。" });
+            //       }
+            //     } catch (error) {
+            //       // 错误处理
+            //       AlertDialog.show({ message: `查询经纬度时出错: ${error.message}` });
+            //     }
+            //   });
+            Divider().vertical(true).height(22).color('#182431').opacity(0).margin({ left: 8, right: 8 })
             // 查询路径规划按钮
             Button("查询步行路径规划")
               .borderRadius(8)
-              .backgroundColor(0x317aff)
+              .backgroundColor(0xEFC3CA)
               .width(200)
               .height(40)
               .fontSize(20)

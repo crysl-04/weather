@@ -10,7 +10,6 @@ interface Building {
   type?: string; // 建筑物类型
 }
 
-
 export class GeocodeResponse {
   status?: string; // 状态值，1表示成功，0表示失败
   info?: string;   // 返回状态描述

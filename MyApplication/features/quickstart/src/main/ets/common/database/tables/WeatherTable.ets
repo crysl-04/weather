@@ -3,6 +3,7 @@ import CommonConstants from '../../constants/CommonConstants';
 import Rdb from '../Rdb';
 import WeatherData from '../../../viewmodel/WeatherData';
 
+// 定义 WeatherTable 类，用于管理天气数据的增删改查
 export default class WeatherTable {
   private weatherTable = new Rdb(CommonConstants.WEATHER_TABLE.tableName, CommonConstants.WEATHER_TABLE.sqlCreate,
     CommonConstants.WEATHER_TABLE.columns);
@@ -11,10 +12,12 @@ export default class WeatherTable {
     this.weatherTable.getRdbStore(callback);
   }
 
+  // 获取数据库存储实例
   getRdbStore(callback: Function = () => {}) {
     this.weatherTable.getRdbStore(callback);
   }
 
+  // 插入一条天气数据记录
   insertWeatherData(weatherData: WeatherData, callback:  (success: boolean) => void):void {
     const valueBucket: relationalStore.ValuesBucket = {
       city: weatherData.city,
@@ -28,19 +31,21 @@ export default class WeatherTable {
     this.weatherTable.insertData(valueBucket, callback);
   }
 
+  // 根据城市名称删除一条天气数据记录
   deleteWeatherData(city: string, callback: Function) {
     let predicates = new relationalStore.RdbPredicates(CommonConstants.WEATHER_TABLE.tableName);
     predicates.equalTo('city', city);
     this.weatherTable.deleteData(predicates, callback);
   }
 
+  // 删除所有天气数据记录
   deleteAllWeatherData(callback: (result: boolean) => void): void {
     // 创建一个没有条件的 RdbPredicates 实例，表示删除所有数据
     const predicates = new relationalStore.RdbPredicates(CommonConstants.WEATHER_TABLE.tableName);
     this.weatherTable.deleteData(predicates, callback);
   }
 
-
+  // 更新指定城市的天气数据
   updateWeatherData(city: string, weatherData: WeatherData, callback: Function) {
     const valueBucket: relationalStore.ValuesBucket = {
       weather: weatherData.weather,
@@ -55,6 +60,7 @@ export default class WeatherTable {
     this.weatherTable.updateData(predicates, valueBucket, callback);
   }
 
+  // 查询指定城市的天气数据
   queryWeatherData(city: string, callback: Function) {
     let predicates = new relationalStore.RdbPredicates(CommonConstants.WEATHER_TABLE.tableName);
     predicates.equalTo('city', city);
@@ -79,6 +85,7 @@ export default class WeatherTable {
     });
   }
 
+  // 查询所有天气数据
   queryAllWeatherData(callback: Function) {
     let predicates = new relationalStore.RdbPredicates(CommonConstants.WEATHER_TABLE.tableName);
     // 不设置任何条件，以查询所有记录
