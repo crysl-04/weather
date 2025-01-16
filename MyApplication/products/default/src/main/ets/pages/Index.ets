@@ -268,6 +268,9 @@ struct Index {
 }
 @Component
 struct share{
+  //用于得到可滑动效果需要设置的参数
+  @State rotateAngle: number = 0;
+  @State speed: number = 1;
 
   @Link  postList:myPost[]
   @Link postBase1:myPost[]
@@ -405,6 +408,15 @@ struct share{
       }
 
     }
+    .gesture(
+      // 绑定滑动手势且限制仅在竖直方向滑动时触发
+      SwipeGesture({ direction: SwipeDirection.Vertical })
+
+        .onAction((event: GestureEvent) => {
+          this.speed = event.speed;
+          this.rotateAngle = event.angle;
+        })
+    )
   }
 }
 @Component
