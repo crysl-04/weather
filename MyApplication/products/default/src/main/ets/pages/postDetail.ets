@@ -2,19 +2,21 @@ import router from '@ohos.router';
 @Entry
 @Component
 export struct PostDetail {
-  //但是这样就不是持久化存储了
+
+  //帖子详情页面
+  //获取跳转进入时传入的该条帖子相关数据
+
   @State title: string = (router.getParams() as Record<string, string>)['title'];
   @State city :string= (router.getParams() as Record<string, string>)['city'];
   @State contents:string = (router.getParams() as Record<string, string>)['contents'];
   @State picture:string=(router.getParams() as Record<string, string>)['picture'];
+
   build() {
     Column() {
       Row() {
+        //返回按钮
         Button('<', { type: ButtonType.Capsule, stateEffect: true })
-          // .fontSize('16fp')
-          // .width('100%')
-          //   // .height('40vp')
-          // .backgroundColor('#007DFF')
+
           .fontSize('16fp')
           .width('50vp')
           .height('50vp')
@@ -24,10 +26,12 @@ export struct PostDetail {
           .borderRadius('25vp')
           .onClick(async () => {
             router.back({
+              //点击回到原来的页面
               url: "pages/Index"
             })
           })
         Blank().width(20)
+        //展示标题
         Text(this.title)
           .fontSize(20)
           .margin({ bottom: 8 })
@@ -36,21 +40,16 @@ export struct PostDetail {
       .width('100%')
       .justifyContent(FlexAlign.Start)
       Blank()
-      // Text(this.contents)
-      //   .fontSize(16)
-      //   .fontColor(Color.Gray)
-      //   .margin({ bottom: 8 })
-      //   .height("100%")
-      //   .margin({ bottom: 16 })
-      // .width('100%')
-      // Blank()
+
       Column(){
+        //展示图片
         Image($r(this.picture))
           .width('100%')
           .height(200)
           .margin({ right: 20 })
       }
       Scroll() {
+        //展示可滚动查阅的文本内容
         Column() {
           Text(this.contents)
             .fontSize(16)
@@ -63,12 +62,6 @@ export struct PostDetail {
       .width('100%')
 
     }
-    // .height('100%')
-    // .padding(20)
-    // .borderRadius(12)
-    // .backgroundColor('#FFECECEC')
-    // .height(120)
-    // .width('100%')
-    // .justifyContent(FlexAlign.SpaceBetween)
+
   }
 }

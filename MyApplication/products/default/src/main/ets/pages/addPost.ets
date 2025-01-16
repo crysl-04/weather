@@ -4,7 +4,7 @@ import { relationalStore, ValuesBucket } from '@kit.ArkData'
 import {myPost} from '../myInterface/postInterface';
 @Entry
 @Component
-  //完成添加帖子的页面
+  //添加帖子的页面
 struct AddPost {
   @State title:string=''
   @State city:string=''
@@ -33,11 +33,10 @@ struct AddPost {
       }
       .height('10%')
       .width('90%')
-      //请输入帖子标题
-      //请输入帖子相关地点
       Column(){
-        //如何得到输入内容
-        //然后再存储起来
+
+       //提示输入帖子的标题、地点和内容
+
         Text('标题:')
         TextInput({ placeholder: '请输入帖子标题' })
           .onChange((value) => {
@@ -59,14 +58,8 @@ struct AddPost {
           .height('40vp')
           .backgroundColor('#007DFF')
           .onClick(async () => {
-            //能否正常进行数据的传递呢，看看这种方法究竟能不能行
-            // promptAction.showToast({
-            //   message: `title:${this.title}\n`+
-            //     `city: ${this.city}\n`+
-            //     `contents: ${this.contents}\n`
-            //
-            // });
-            //存储到数据库中
+           //点击按钮，保存帖子
+
             if(this.rdb==null){
               this.rdb = await relationalStore.getRdbStore(getContext(),{
                 name: 'RdbTest.db',
@@ -74,8 +67,7 @@ struct AddPost {
               });
             }
 
-            //如果不存在创建表postsTable,没有出现每次都重新创建表的情况，但是每次重新开启数据库表中的内容就会清空
-            //似乎并没有持久化，怎样做呢
+            //没有表就创建表
             let createSQL:string =
               `CREATE TABLE IF NOT EXISTS postsTable
               (id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -115,17 +107,20 @@ struct AddPost {
                 bottom: 200
               });
             }
-            //查询得到表中数据
+
+            //查询得到表中已经存放的所有数据，将这些数据都存储在postList中
+
             let predicates= new relationalStore.RdbPredicates('postsTable')
             predicates.orderByDesc('id')
 
             let resultSet = await this.rdb.query(predicates)
             while (resultSet.goToNextRow()) {
-              // 获取行数据
+
               let row = resultSet.getRow() as myPost
-              // 追加到数组中
+
               this.postList.push(row)
             }
+            //回到原来的页面，将postList穿回，得到动态创建的帖子的数据
             router.back({
               url: "pages/Index",
               params: {

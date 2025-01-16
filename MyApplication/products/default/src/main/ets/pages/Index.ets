@@ -9,6 +9,9 @@ import promptAction from '@ohos.promptAction';
 @Entry
 @Component
 struct Index {
+
+  //存储一些静态帖子的数据，在尚未添加帖子时就可以展示
+
   @State postBase1:myPost[]=[
     {id:0,title:"上海|熬夜准备的攻略", city:'上海',
       contents:"一、必游景点\n" +
@@ -106,30 +109,15 @@ struct Index {
       '\n' +
       '矿泉温泉酒店：泡温泉、住酒店两不误。'}]
   @State postList:myPost[]=[]
-  //   {
-  //   title:'',
-  //   author:'',
-  //   position:'',
-  //   contents:''
-  // }
-  // @State title:string=''
-  // @State city:string=''
-  // @State contents:string=''
 
   onPageShow(){
-    //每次进入这个页面都要执行
+
     if(router.getParams()){
 
+      //得到添加帖子页面返回时传入的动态创建的帖子的数据
+
       this.postList=(router.getParams() as Record<string, myPost[]>)['postList'];
-      //到底选择存数据库还是接口列表呢  数据库吧
-      // //试试接口
-      // this.post.title=this.title
-      // this.post.position=this.city
-      // this.post.contents=this.contents
-      // this.postList.push(this.post)
-      promptAction.showToast({
-        message: `we get the post\n`
-      });
+
     }
 
   }
@@ -176,6 +164,7 @@ struct Index {
       }
       .tabBar(this.tabBarBuilder('首页', 0, $r('app.media.ic_01_on'), $r('app.media.ic_01_off')))
 
+      //分享页面这一tab，页面具体实现在自定义组件share()中
       TabContent() {
 
         share({postList:this.postList,postBase1:this.postBase1,postBase2:this.postBase2})
@@ -279,38 +268,17 @@ struct Index {
 }
 @Component
 struct share{
+
   @Link  postList:myPost[]
   @Link postBase1:myPost[]
   @Link postBase2:myPost[]
-  // @State post:myPost={
-  //   title:'',
-  //   author:'',
-  //   position:'',
-  //   contents:''
-  //
-  // }
-  // @State title:string=''
-  // @State city:string=''
-  // @State contents:string=''
-  // onPageShow(){
-  //   if(router.getParams()){
-  //
-  //     this.title = (router.getParams() as Record<string, string>)['title'];
-  //     this.city = (router.getParams() as Record<string, string>)['city'];
-  //     this.contents = (router.getParams() as Record<string, string>)['city'];
-  //     this.post.title=this.title
-  //     this.post.position=this.city
-  //     this.post.contents=this.contents
-  //     this.postList.push(this.post)
-  //     promptAction.showToast({
-  //       message: `we get the post\n`
-  //     });
-  //   }
-  //
-  // }
+
   build(){
     Column(){
       Row(){
+
+        //标题
+
         Text('旅游分享')
           .id('travelShare')
           .fontSize(24)
@@ -321,11 +289,11 @@ struct share{
           .fontFamily('HarmonyHeiTi-Bold')
           .lineHeight(33)
         Blank()
+
+        //加号按钮，点击可以新建帖子
+
         Button('+', { type: ButtonType.Capsule, stateEffect: true })
-          // .fontSize('16fp')
-          // .width('100%')
-          //   // .height('40vp')
-          // .backgroundColor('#007DFF')
+
           .fontSize('16fp')
           .width('50vp')
           .height('50vp')
@@ -333,6 +301,8 @@ struct share{
           .fontColor('#FFFFFF')
           .borderRadius('25vp')
           .onClick(async () => {
+
+            //点击后进入添加帖子的页面
             promptAction.showToast({
               message: `click the button\n`
             });
@@ -345,32 +315,22 @@ struct share{
             });
           })
 
-        //进入另外一个页面
-        // title:string;
-        // author:string;
-        // position:string;
-        // contents:string;
-
       }
-      //原本就有的帖子：
+      //原本就有的静态帖子：
       List(){
         ForEach(this.postBase1,(item:myPost,index:number)=>{
           ListItem(){
             Row(){
               onePost({ item: item,PictureSource:'app.media.shanghai' })
                 .margin({ top: 10 })
-              // Text(item.title)
-              // Blank()
-              // Text(item.city)
             }
 
             .height('20%')
             .width('100%')
           }
-          .padding(5)  // 添加内边距
+          .padding(5)
           .onClick(() => {
-            //点击查看post具体内容
-
+            //点击查看post具体内容，跳转到帖子详情页面
             router.pushUrl({
               url: "pages/postDetail",
               params: {
@@ -390,17 +350,13 @@ struct share{
             Row(){
               onePost({ item: item,PictureSource:'app.media.heilongjiang' })
                 .margin({ top: 10 })
-              // Text(item.title)
-              // Blank()
-              // Text(item.city)
             }
 
             .height('20%')
             .width('100%')
           }
-          .padding(5)  // 添加内边距
+          .padding(5)
           .onClick(() => {
-            //点击查看post具体内容
 
             router.pushUrl({
               url: "pages/postDetail",
@@ -415,23 +371,22 @@ struct share{
           })
         })
       }
-      //展示帖子
+
+      //展示动态创建的帖子
       //遍历所有存储的列表中的项
       List(){
         ForEach(this.postList,(item:myPost,index:number)=>{
           ListItem(){
             Row(){
+              //具体布局在onePost组件中
               onePost({ item: item,PictureSource:'app.media.myPicture' })
                 .margin({ top: 10 })
-              // Text(item.title)
-              // Blank()
-              // Text(item.city)
             }
 
             .height('20%')
             .width('100%')
           }
-          .padding(5)  // 添加内边距
+          .padding(5)
           .onClick(() => {
             //点击查看post具体内容
 
@@ -457,6 +412,7 @@ struct onePost{
   @Prop item:myPost
   @Prop PictureSource:string
   build() {
+    //布局有图片、文字
     Row() {
       Image($r(this.PictureSource))
         .width(80)
