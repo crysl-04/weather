@@ -52,6 +52,10 @@ export struct PostDetail {
         Text(this.title)
           .fontSize(20)
           .margin({ bottom: 8 })
+          // .fontFamily('HarmonyHeiTi-Bold')
+          .fontFamily('Lora')
+          .fontWeight('bold')
+          .letterSpacing(1.5)
 
       }
       .width('100%')
@@ -82,6 +86,10 @@ export struct PostDetail {
                   this.rotateAngle = event.angle;
                 })
             )
+          Image($r('app.media.heart'))
+            .width(80)
+            .height(80)
+            .margin({ right: 20 })
 
 
 

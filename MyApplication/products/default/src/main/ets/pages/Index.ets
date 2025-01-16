@@ -436,10 +436,21 @@ struct onePost{
           .fontSize(20)
           .margin({ bottom: 8 })
         Blank()
-        Text(this.item.city)
-          .fontSize(16)
-          .fontColor(Color.Gray)
-          .margin({ bottom: 8 })
+        Row() {
+          Text(this.item.city)
+            .fontSize(16)
+            .fontColor(Color.Gray)
+            .margin({ bottom: 8 })
+          Image($r('app.media.icon'))
+            .width(50)
+            .height(50)
+            .margin({ right: 20 })
+          Image($r('app.media.say'))
+            .width(30)
+            .height(30)
+            .margin({ right: 20 })
+
+        }
       }
       .alignItems(HorizontalAlign.Start)
       .width('80%')
