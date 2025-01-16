@@ -241,10 +241,15 @@ struct Index {
               .backgroundColor(Color.Red)
               .margin({ bottom: -20 })
               .clickEffect({ level: ClickEffectLevel.HEAVY })  //按钮点击动效
+              .onClick(()=>{router.pushUrl({
+                url: 'pages/Login'
+              })})
             Button('退出登录')
               .width(200)
               .backgroundColor(Color.Red)
-              .clickEffect({ level: ClickEffectLevel.HEAVY })
+              .onClick(()=>{router.pushUrl({
+                url: 'pages/Login'
+              })})
 
           }
         }
