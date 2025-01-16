@@ -1,4 +1,5 @@
 import router from '@ohos.router';
+
 @Entry
 @Component
 export struct PostDetail {
@@ -10,6 +11,9 @@ export struct PostDetail {
   @State city :string= (router.getParams() as Record<string, string>)['city'];
   @State contents:string = (router.getParams() as Record<string, string>)['contents'];
   @State picture:string=(router.getParams() as Record<string, string>)['picture'];
+
+  @State rotateAngle: number = 0;
+  @State speed: number = 1;
 
   build() {
     Column() {
@@ -56,6 +60,18 @@ export struct PostDetail {
             .fontColor(Color.Gray)
             .margin({ bottom: 16 })
             .width('100%')
+            .gesture(
+              // 绑定滑动手势且限制仅在竖直方向滑动时触发
+              SwipeGesture({ direction: SwipeDirection.Vertical })
+
+                .onAction((event: GestureEvent) => {
+                  this.speed = event.speed;
+                  this.rotateAngle = event.angle;
+                })
+            )
+
+
+
         }
       }
       .height('100%')

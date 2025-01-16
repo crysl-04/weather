@@ -87,7 +87,7 @@ struct AddPost {
                 duration: 5000,  // 持续时间5秒
                 bottom: 200      // 显示在屏幕底部
               });
-            }
+            }//处理异常
             // 插入数据
             try {
               await this.rdb.insert('postsTable', {
@@ -106,7 +106,7 @@ struct AddPost {
                 duration: 5000,
                 bottom: 200
               });
-            }
+            }//处理异常
 
             //查询得到表中已经存放的所有数据，将这些数据都存储在postList中
 
