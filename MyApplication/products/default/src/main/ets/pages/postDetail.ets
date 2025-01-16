@@ -1,5 +1,5 @@
 import router from '@ohos.router';
-
+import { curves } from '@kit.ArkUI';
 @Entry
 @Component
 export struct PostDetail {
@@ -14,6 +14,19 @@ export struct PostDetail {
 
   @State rotateAngle: number = 0;
   @State speed: number = 1;
+
+  //转场动画效果设置
+  private effect: TransitionEffect =
+
+    TransitionEffect.OPACITY.animation({ curve: curves.springMotion(0.6, 0.8) })
+
+      .combine(TransitionEffect.scale({ x: 0, y: 0 }))
+
+      .combine(TransitionEffect.rotate({ angle: 90 }))
+
+      .combine(TransitionEffect.translate({ y: 150 }).animation({ curve: curves.springMotion() }))
+
+      .combine(TransitionEffect.move(TransitionEdge.END))
 
   build() {
     Column() {
@@ -78,6 +91,8 @@ export struct PostDetail {
       .width('100%')
 
     }
+    //添加转场动画效果
+    .transition(this.effect)
 
   }
 }
