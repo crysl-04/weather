@@ -177,7 +177,7 @@ struct Register {
         Text('关于我们')
           .fontColor('#007DFF')
           .onClick(() => {
-            promptAction.showToast({message: 'this.username \nthis.password'})
+            promptAction.showToast({message: "罗熙玥、何海艳、孙浩翔、叶子悦"})
           })
         Text('天气，资讯一站式查询平台')
           .fontSize(20)
