@@ -178,6 +178,7 @@ struct Index {
       TabContent() {
         Scroll(this.scroller)
         {
+          // 布局为垂直排列，元素之间有 40 的间距
           Column({ space: 40 }) {
             //页头
             Row({ space: 10 }) {
@@ -194,7 +195,7 @@ struct Index {
             .width('95%')
             .margin({ top: -5, left: 10 })
 
-            // 用户头像
+            // 用户头像和信息部分
             Row({ space: 25 }) {
               Image($r('app.media.logo'))
                 .width(60)
@@ -214,6 +215,7 @@ struct Index {
 
             // 功能列表
             List({ space: 10 }) {
+              // 遍历 itemList 数组生成列表项
               ForEach(this.itemList, (item: string, index: number) => {
                 ListItem() {
                   Row({}) {
@@ -233,11 +235,12 @@ struct Index {
             }.width('95%').height(250)
             .margin({ bottom: 30, right: -10 })
 
+            // 操作按钮部分
             Button('切换账号')
               .width(200)
               .backgroundColor(Color.Red)
               .margin({ bottom: -20 })
-              .clickEffect({ level: ClickEffectLevel.HEAVY })
+              .clickEffect({ level: ClickEffectLevel.HEAVY })  //按钮点击动效
             Button('退出登录')
               .width(200)
               .backgroundColor(Color.Red)
