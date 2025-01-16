@@ -69,10 +69,13 @@ export struct PostDetail {
           .height(200)
           .margin({ right: 20 })
       }
+      Blank()
+        .height(30)
       Scroll() {
         //展示可滚动查阅的文本内容
         Column() {
           Text(this.contents)
+            .fontFamily('Lora')
             .fontSize(16)
             .fontColor(Color.Gray)
             .margin({ bottom: 16 })
