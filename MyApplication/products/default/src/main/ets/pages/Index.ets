@@ -126,7 +126,7 @@ struct Index {
 
   //user
   @State username: string = (router.getParams() as string)['username']
-  @State account: string = '12345678'
+  // @State account: string = '12345678'
   @State itemList: Array<string> = ['个人信息','账户设置', '相关推荐', '联系客服']
   scroller: Scroller = new Scroller();
 
@@ -205,9 +205,9 @@ struct Index {
                   .fontWeight(FontWeight.Bold)
                   .fontSize(22)
                   .margin({ top: 0, left: -60 })
-                Text('账号: ' + this.account)
-                  .fontSize(18)
-                  .fontColor(Color.Grey)
+                // Text('账号: ' + this.account)
+                //   .fontSize(18)
+                //   .fontColor(Color.Grey)
               }
             }
             .margin({ top: 0, left: -50, bottom: 50 })
