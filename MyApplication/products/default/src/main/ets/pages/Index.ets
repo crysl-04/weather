@@ -204,7 +204,7 @@ struct Index {
                 Text(this.username)
                   .fontWeight(FontWeight.Bold)
                   .fontSize(22)
-                  .margin({ top: 0, left: -60 })
+                  .margin({ top: 0, left: 5 })
                 // Text('账号: ' + this.account)
                 //   .fontSize(18)
                 //   .fontColor(Color.Grey)
