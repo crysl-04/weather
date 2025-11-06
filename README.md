@@ -1,93 +1,216 @@
-# weather
+# 城市信息应用（Weather）
 
+这是一个基于HarmonyOS开发的城市信息应用，提供天气查询、城市地图、旅游分享等功能。
 
+## 📱 项目简介
 
-## Getting started
+本项目是一个HarmonyOS应用，主要功能包括：
+- **首页**：天气查询、城市信息展示
+- **分享**：旅游攻略分享功能
+- **历史文化**：城市地图和历史信息展示
+- **我的**：用户个人信息和设置
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## 🛠️ 环境要求
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+在运行本项目之前，请确保您的开发环境满足以下要求：
 
-## Add your files
+### 必需软件
+1. **DevEco Studio**（推荐版本：4.0或更高）
+   - 下载地址：https://developer.harmonyos.com/cn/develop/deveco-studio
+   - 这是HarmonyOS官方IDE，用于开发和调试应用
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+2. **Node.js**（版本：14.19.1或更高）
+   - 用于运行Hvigor构建工具
+   - 下载地址：https://nodejs.org/
+
+3. **HarmonyOS SDK**
+   - 在DevEco Studio中自动下载，或手动配置
+   - 本项目需要API 12（SDK版本5.0.0）
+
+### 硬件要求
+- **开发设备**：Windows 10/11、macOS 10.14+ 或 Linux（Ubuntu 18.04+）
+- **测试设备**：HarmonyOS手机或模拟器（API 12或更高版本）
+
+## 📦 安装步骤
+
+### 第一步：克隆项目
+```bash
+# 如果项目在Git仓库中
+git clone <项目地址>
+cd weather
+```
+
+### 第二步：安装依赖
+1. 打开DevEco Studio
+2. 选择 `File` -> `Open`，选择项目根目录（`weather`文件夹）
+3. DevEco Studio会自动检测项目并提示安装依赖
+4. 等待依赖安装完成（首次安装可能需要几分钟）
+
+### 第三步：配置SDK
+1. 打开 `File` -> `Settings`（Windows）或 `Preferences`（macOS）
+2. 选择 `Appearance & Behavior` -> `System Settings` -> `HarmonyOS SDK`
+3. 确保已安装API 12（SDK版本5.0.0）
+4. 如果没有，点击 `Download` 下载
+
+## 🚀 运行方法
+
+### 方法一：使用DevEco Studio运行（推荐）
+
+1. **打开项目**
+   - 启动DevEco Studio
+   - 选择 `File` -> `Open`，打开项目文件夹
+
+2. **连接设备**
+   - **使用真机**：
+     - 在手机上开启"开发者选项"和"USB调试"
+     - 用USB线连接手机到电脑
+     - 在DevEco Studio中点击 `Run` -> `Run 'default'`
+   - **使用模拟器**：
+     - 点击 `Tools` -> `Device Manager`
+     - 创建并启动一个HarmonyOS模拟器
+     - 等待模拟器启动完成后，点击 `Run` -> `Run 'default'`
+
+3. **构建和运行**
+   - 点击工具栏上的绿色运行按钮（▶️）
+   - 或使用快捷键：`Shift + F10`（Windows/Linux）或 `Ctrl + R`（macOS）
+   - 等待构建完成，应用会自动安装到设备上并启动
+
+### 方法二：使用命令行运行
+
+1. **打开终端**
+   - Windows：PowerShell 或 CMD
+   - macOS/Linux：Terminal
+
+2. **进入项目目录**
+```bash
+cd weather/MyApplication
+```
+
+3. **安装依赖（首次运行）**
+```bash
+# Windows
+hvigorw.bat assembleHap
+
+# macOS/Linux
+./hvigorw assembleHap
+```
+
+4. **构建应用**
+```bash
+# Windows
+hvigorw.bat assembleHap --mode module -p product=default
+
+# macOS/Linux
+./hvigorw assembleHap --mode module -p product=default
+```
+
+5. **安装到设备**
+   - 构建完成后，在 `MyApplication/products/default/build/default/outputs/default/` 目录下会生成 `.hap` 文件
+   - 使用 `hdc` 工具安装：
+```bash
+hdc install default-default-signed.hap
+hdc shell aa start -a EntryAbility -b com.example.myapplication
+```
+
+## 📁 项目结构说明
 
 ```
-cd existing_repo
-git remote add origin https://git.nju.edu.cn/my-group/weather.git
-git branch -M main
-git push -uf origin main
+weather/
+├── MyApplication/              # 主应用目录
+│   ├── AppScope/              # 应用级配置
+│   │   ├── app.json5         # 应用配置文件
+│   │   └── resources/        # 应用级资源
+│   ├── products/              # 产品目录
+│   │   └── default/          # 默认产品配置
+│   │       └── src/main/     # 主模块源码
+│   │           ├── ets/      # ArkTS源码
+│   │           │   ├── pages/        # 页面文件
+│   │           │   ├── entryability/ # 入口Ability
+│   │           │   └── ...
+│   │           └── resources/ # 资源文件
+│   ├── features/              # 功能模块
+│   │   ├── quickstart/       # 首页模块（天气查询）
+│   │   ├── map/              # 地图模块
+│   │   └── my/               # 我的模块
+│   ├── commons/               # 公共模块
+│   │   ├── utils/            # 工具类
+│   │   └── uicomponents/     # UI组件
+│   ├── hvigorfile.ts         # Hvigor构建配置
+│   └── build-profile.json5   # 构建配置文件
+└── README.md                  # 项目说明文档
 ```
 
-## Integrate with your tools
+## 🔧 常见问题
 
-- [ ] [Set up project integrations](https://git.nju.edu.cn/my-group/weather/-/settings/integrations)
+### 1. 构建失败：找不到Node.js
+**解决方法**：
+- 确保已安装Node.js并添加到系统PATH
+- 在DevEco Studio中配置Node.js路径：`File` -> `Settings` -> `Languages & Frameworks` -> `Node.js`
 
-## Collaborate with your team
+### 2. 依赖安装失败
+**解决方法**：
+- 检查网络连接
+- 尝试使用国内镜像源
+- 删除 `oh-package-lock.json5` 文件后重新安装
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### 3. 设备连接失败
+**解决方法**：
+- 检查USB调试是否开启
+- 尝试重新连接USB线
+- 在设备上确认"允许USB调试"提示
 
-## Test and Deploy
+### 4. 应用安装失败
+**解决方法**：
+- 检查设备是否支持API 12
+- 卸载旧版本应用后重新安装
+- 检查签名配置是否正确
 
-Use the built-in continuous integration in GitLab.
+## 📝 功能说明
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+### 主要功能模块
 
-***
+1. **首页（QuickStart）**
+   - 天气查询和展示
+   - 城市信息浏览
+   - 美食文化推荐
 
-# Editing this README
+2. **分享（Share）**
+   - 查看旅游攻略
+   - 发布新的旅游分享
+   - 浏览其他用户的分享
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+3. **历史文化（Map）**
+   - 城市地图展示
+   - 历史信息查询
+   - 地理位置相关功能
 
-## Suggestions for a good README
+4. **我的（My）**
+   - 用户个人信息
+   - 账户设置
+   - 收藏管理
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 🎯 开发说明
 
-## Name
-Choose a self-explaining name for your project.
+### 技术栈
+- **开发语言**：ArkTS（TypeScript的超集）
+- **UI框架**：ArkUI
+- **构建工具**：Hvigor
+- **API版本**：HarmonyOS API 12
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### 代码规范
+- 遵循HarmonyOS开发规范
+- 使用ESLint进行代码检查
+- 组件化开发，模块独立
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+## 📄 许可证
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+本项目仅供学习和研究使用。
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## 👥 联系方式
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+如有问题或建议，请通过以下方式联系：
+- 项目仓库：https://git.nju.edu.cn/my-group/weather
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+---
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+**注意**：首次运行项目时，请确保网络连接正常，以便下载必要的依赖和SDK组件。
