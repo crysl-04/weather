@@ -52,6 +52,32 @@ cd weather
 3. 确保已安装API 12（SDK版本5.0.0）
 4. 如果没有，点击 `Download` 下载
 
+### 第四步：配置API Key（重要！）
+⚠️ **安全提示**：本项目使用高德地图API，需要配置API key才能正常使用天气查询、路径规划等功能。
+
+1. **获取高德地图API Key**
+   - 访问：https://console.amap.com/dev/key/app
+   - 注册/登录高德开放平台账号
+   - 创建应用并获取API key
+   - 确保已开通以下服务：
+     - 天气查询API
+     - 地理编码API
+     - 路径规划API
+
+2. **配置API Key**
+   - 在项目中找到文件：`MyApplication/features/quickstart/src/main/ets/common/config/ApiConfig.example.ets`
+   - 复制该文件并重命名为 `ApiConfig.ets`（去掉`.example`后缀）
+   - 打开 `ApiConfig.ets` 文件
+   - 将 `YOUR_AMAP_API_KEY_HERE` 替换为您的高德地图API key
+   ```typescript
+   static readonly AMAP_API_KEY: string = '您的API_KEY';
+   ```
+
+3. **验证配置**
+   - `ApiConfig.ets` 文件已在 `.gitignore` 中，不会被提交到Git仓库
+   - 请妥善保管您的API key，不要泄露给他人
+   - 如果API key泄露，请立即在高德开放平台重新生成新的key
+
 ## 🚀 运行方法
 
 ### 方法一：使用DevEco Studio运行（推荐）
@@ -164,6 +190,14 @@ weather/
 - 检查设备是否支持API 12
 - 卸载旧版本应用后重新安装
 - 检查签名配置是否正确
+
+### 5. API调用失败或返回错误
+**解决方法**：
+- 检查是否已正确配置 `ApiConfig.ets` 文件
+- 确认API key是否正确且有效
+- 检查高德开放平台中是否已开通相应的API服务
+- 查看控制台日志，确认API key是否被正确读取
+- 如果API key已泄露，请立即在高德开放平台重新生成新的key
 
 ## 📝 功能说明
 

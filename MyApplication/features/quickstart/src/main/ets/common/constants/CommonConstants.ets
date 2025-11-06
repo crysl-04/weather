@@ -1,5 +1,6 @@
 import { relationalStore } from '@kit.ArkData';
 import { UsersTable,WeatherTable ,CityTable} from '../../viewmodel/ConstantsInterface';
+import ApiConfig from '../config/ApiConfig';
 
 export default class CommonConstants {
   static readonly WEATHER_TABLE: WeatherTable = {
@@ -49,5 +50,11 @@ export default class CommonConstants {
   static readonly USERS_TABLE_TAG = '[Debug.UsersTable]';
   static  readonly  WEATHER_TABLE_TAG: 'WeatherTable';
   static  readonly  CITY_TABLE_TAG: 'CityTable';
+
+  /**
+   * 高德地图API配置
+   * ⚠️ 安全提示：API key从ApiConfig.ets文件中读取，请确保已正确配置
+   */
+  static readonly AMAP_API_KEY: string = ApiConfig.AMAP_API_KEY;
 
 }

@@ -1,5 +1,6 @@
 import http from '@ohos.net.http';
 import { RouteResponse } from '../viewmodel/Route';
+import CommonConstants from '../common/constants/CommonConstants';
 
 export interface Location {
   longitude: number;
@@ -13,7 +14,7 @@ export class getRouteUtil {
     return new Promise<RouteResponse | null>((resolve, reject) => {
       const origin = `${start.longitude},${start.latitude}`;
       const destination = `${end.longitude},${end.latitude}`;
-      const url = `https://restapi.amap.com/v3/direction/walking?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&key=2bacbe5e2e3d8c30eca80abc98b93672&output=JSON`;
+      const url = `https://restapi.amap.com/v3/direction/walking?origin=${encodeURIComponent(origin)}&destination=${encodeURIComponent(destination)}&key=${CommonConstants.AMAP_API_KEY}&output=JSON`;
       console.log(url);
       console.log(origin);
       console.log(destination);

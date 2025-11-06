@@ -10,3 +10,5 @@
 /.clang-tidy
 **/.test
 /.appanalyzer
+# API配置文件，包含敏感信息，不应提交到Git仓库
+**/ApiConfig.ets

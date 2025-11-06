@@ -1,12 +1,14 @@
 import {WeatherModel} from "../viewmodel/WeatherModel"
 import http from '@ohos.net.http';
+import CommonConstants from '../common/constants/CommonConstants';
+
 class getWeatherUtil{
 
   getWeather(cityCode:number){
     return new Promise<WeatherModel>((resolve,reject)=>{
       //创建
       let request = http.createHttp()
-      let url= `https://restapi.amap.com/v3/weather/weatherInfo?city=${cityCode}&key=2bacbe5e2e3d8c30eca80abc98b93672&extensions=base`
+      let url= `https://restapi.amap.com/v3/weather/weatherInfo?city=${cityCode}&key=${CommonConstants.AMAP_API_KEY}&extensions=base`
 
       let options = {
         method:http.RequestMethod.GET,

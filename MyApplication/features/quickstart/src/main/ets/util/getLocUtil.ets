@@ -1,5 +1,6 @@
 import http from '@ohos.net.http';
 import {GeocodeResponse} from '../viewmodel/Geo'
+import CommonConstants from '../common/constants/CommonConstants';
 
 interface Location {
   longitude: number;
@@ -13,7 +14,7 @@ class getLocUtil {
   getLoc(address: string): Promise<Location | null> {
     return new Promise<Location | null>((resolve, reject) => {
 
-      const url = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(address)}&key=2bacbe5e2e3d8c30eca80abc98b93672&output=JSON`;
+      const url = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(address)}&key=${CommonConstants.AMAP_API_KEY}&output=JSON`;
 
       // 创建HTTP请求
       let request = http.createHttp();
